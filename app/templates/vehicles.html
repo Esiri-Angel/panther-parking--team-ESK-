@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My vehicles - Panther Parking{% endblock %}
+{% block content %}
+<h1>My vehicles</h1>
+<table>
+  <thead><tr><th>Plate</th><th>Make</th><th>Model</th><th>Color</th></tr></thead>
+  <tbody>
+  {% for v in vehicles %}
+    <tr><td>{{ v.plate }}</td><td>{{ v.make }}</td><td>{{ v.model }}</td><td>{{ v.color }}</td></tr>
+  {% else %}
+    <tr><td colspan="4">No vehicles yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2>Register a vehicle</h2>
+<form method="post">
+  <label>Plate (up to 8 letters or digits) <br><input name="plate" maxlength="8" required></label>
+  <label>Make <br><input name="make" required></label>
+  <label>Model <br><input name="model" required></label>
+  <label>Color <br><input name="color" required></label>
+  <button type="submit">Register vehicle</button>
+</form>
+{% endblock %}

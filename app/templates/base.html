@@ -23,6 +23,7 @@
     <nav>
       <a href="{{ url_for('lots.index') }}">Lots</a>
       {% if g.user %}
+        <a href="{{ url_for('vehicles.index') }}">My vehicles</a>
         <span>{{ g.user['email'] }}</span> <a href="{{ url_for('auth.logout') }}">Log out</a>
       {% else %}
         <a href="{{ url_for('auth.register') }}">Register</a> <a href="{{ url_for('auth.login') }}">Log in</a>
