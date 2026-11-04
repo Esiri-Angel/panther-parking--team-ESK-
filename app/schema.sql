@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS vehicle;
 DROP TABLE IF EXISTS lot;
 DROP TABLE IF EXISTS user;
 
@@ -14,6 +15,15 @@ CREATE TABLE lot (
     zone     TEXT    NOT NULL,
     capacity INTEGER NOT NULL CHECK (capacity > 0),
     occupied INTEGER NOT NULL DEFAULT 0 CHECK (occupied >= 0)
+);
+
+CREATE TABLE vehicle (
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES user (id),
+    plate   TEXT    NOT NULL UNIQUE,
+    make    TEXT    NOT NULL,
+    model   TEXT    NOT NULL,
+    color   TEXT    NOT NULL
 );
 
 -- Sample data so the app shows something on first run.
