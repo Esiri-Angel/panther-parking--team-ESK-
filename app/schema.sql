@@ -26,6 +26,15 @@ CREATE TABLE vehicle (
     color   TEXT    NOT NULL
 );
 
+CREATE TABLE permit (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    vehicle_id INTEGER NOT NULL REFERENCES vehicle (id),
+    lot_id     INTEGER NOT NULL REFERENCES lot (id),
+    status     TEXT NOT NULL DEFAULT 'pending'
+               CHECK (status IN ('pending', 'approved', 'rejected')),
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Sample data so the app shows something on first run.
 INSERT INTO lot (name, zone, capacity, occupied) VALUES
     ('Lot 1 - Memorial Student Center', 'Student', 220, 40),
