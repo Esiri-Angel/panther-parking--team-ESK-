@@ -5,8 +5,8 @@ COMP 3322 Software Engineering, Fall 2026. Team: **<team 3>**
 | Member | GitHub username | Story I own |
 | --- | --- | --- |
 | Esiri Ediri | ediriebizimo-design | Story 2 - Register a vehicle |
-| Srivenkat Basava | Srivenkat2021 | Story 6 - Manage Lots |
-| Kennedy Henry | KenRH21 | Story 3 - Apply for a permit |
+| Srivenkat Basava | Srivenkat2021 | Story 3 - Apply for a permit |
+| Kennedy Henry | KenRH21 | Story 6 - Manage Lots |
 | Baron Noi | Baronnoi | Story 4 - Approve permits |
 
 ## Set up your team repo (week 0, one member does steps 1-3)
