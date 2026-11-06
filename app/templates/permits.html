@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Request Parking Permit</h1>
+
+<form method="POST">
+    <label>Select Vehicle</label>
+    <select name="vehicle_id" required>
+        {% for vehicle in vehicles %}
+        <option value="{{ vehicle.id }}">
+            {{ vehicle.plate }} - {{ vehicle.make }} {{ vehicle.model }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label>Select Parking Lot</label>
+    <select name="lot_id" required>
+        {% for lot in lots %}
+        <option value="{{ lot.id }}">{{ lot.name }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Submit Permit Request</button>
+</form>
+
+<h2>My Permits</h2>
+
+{% for permit in permits %}
+<p>
+    Permit #{{ permit.id }} |
+    Vehicle: {{ permit.vehicle_id }} |
+    Lot: {{ permit.lot_id }} |
+    Status: {{ permit.status }}
+</p>
+{% else %}
+<p>No permit requests found.</p>
+{% endfor %}
+
+{% endblock %}
