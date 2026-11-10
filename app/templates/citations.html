@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Parking Citations - Panther Parking{% endblock %}
+
+{% block content %}
+{% if is_admin %}
+<h1>Parking Citations (Enforcement)</h1>
+
+<h2>Issue a Citation</h2>
+<form method="post">
+  <label>License Plate (up to 8 letters or digits)<br>
+    <input name="plate" maxlength="8" placeholder="e.g. PVAMU12" required>
+  </label>
+
+  <label>Parking Lot<br>
+    <select name="lot_id">
+      <option value="">-- No specific lot --</option>
+      {% for lot in lots %}
+        <option value="{{ lot.id }}">{{ lot.name }} ({{ lot.zone }})</option>
+      {% endfor %}
+    </select>
+  </label>
+
+  <label>Violation Reason<br>
+    <input name="reason" placeholder="e.g. Parked without valid permit" required>
+  </label>
+
+  <label>Fine Amount ($)<br>
+    <input name="fine_amount" type="number" step="0.01" min="0.01" value="50.00" required>
+  </label>
+
+  <button type="submit">Issue Citation</button>
+</form>
+
+<h2>All Citations</h2>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Plate</th>
+      <th>Lot</th>
+      <th>Reason</th>
+      <th>Fine</th>
+      <th>Status</th>
+      <th>Issued By</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for c in citations %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td><strong>{{ c.plate }}</strong></td>
+      <td>{{ c.lot_name or 'N/A' }}</td>
+      <td>{{ c.reason }}</td>
+      <td>${{ "%.2f"|format(c.fine_amount) }}</td>
+      <td><span class="{{ c.status }}">{{ c.status }}</span></td>
+      <td>{{ c.issuer_email or 'System' }}</td>
+      <td>{{ c.issued_at }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="8">No citations recorded yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<h1>My Citations</h1>
+<p>Below are citations associated with your registered vehicles.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Plate</th>
+      <th>Lot</th>
+      <th>Reason</th>
+      <th>Fine</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for c in citations %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td><strong>{{ c.plate }}</strong></td>
+      <td>{{ c.lot_name or 'N/A' }}</td>
+      <td>{{ c.reason }}</td>
+      <td>${{ "%.2f"|format(c.fine_amount) }}</td>
+      <td><span class="{{ c.status }}">{{ c.status }}</span></td>
+      <td>{{ c.issued_at }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="7">No citations found for your vehicles.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}
+
