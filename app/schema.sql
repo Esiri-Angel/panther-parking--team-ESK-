@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS citation;
+DROP TABLE IF EXISTS permit;
 DROP TABLE IF EXISTS vehicle;
 DROP TABLE IF EXISTS lot;
 DROP TABLE IF EXISTS user;
@@ -33,6 +35,18 @@ CREATE TABLE permit (
     status     TEXT NOT NULL DEFAULT 'pending'
                CHECK (status IN ('pending', 'approved', 'rejected')),
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE citation (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    plate       TEXT    NOT NULL,
+    lot_id      INTEGER REFERENCES lot (id),
+    reason      TEXT    NOT NULL,
+    fine_amount REAL    NOT NULL CHECK (fine_amount > 0),
+    status      TEXT    NOT NULL DEFAULT 'unpaid'
+                CHECK (status IN ('unpaid', 'paid', 'appealed', 'dismissed')),
+    issued_by   INTEGER REFERENCES user (id),
+    issued_at   TEXT    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Sample data so the app shows something on first run.
