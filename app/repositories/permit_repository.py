@@ -40,3 +40,27 @@ def list_for_vehicle(vehicle_id):
         (vehicle_id,),
     ).fetchall()
     return [dict(row) for row in rows]
+
+def update_status(permit_id, status):
+
+    db = get_db()
+
+    cur = db.execute(
+
+        """
+
+        UPDATE permit
+
+        SET status = ?
+
+        WHERE id = ? AND status = 'pending'
+
+        """,
+
+        (status, permit_id),
+
+    )
+
+    db.commit()
+
+    return cur.rowcount
