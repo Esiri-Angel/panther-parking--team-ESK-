@@ -3,6 +3,7 @@ from flask import Blueprint, flash, g, redirect, render_template, request, url_f
 from ..services import permit_service
 from ..services.permit_service import PermitError
 from .auth import login_required
+from flask import abort
 
 bp = Blueprint("permits", __name__, url_prefix="/permits")
 
@@ -27,4 +28,31 @@ def index():
         permits=permit_service.permits_for(g.user["id"]),
         vehicles=permit_service.vehicles_for(g.user["id"]),
         lots=permit_service.available_lots(),
+    )
+
+
+@bp.route("/review", methods=("GET", "POST"))
+@login_required
+def review():
+    try:
+        pending = permit_service.pending_permits(g.user)
+    except PermitError:
+        abort(403)
+
+    if request.method == "POST":
+        try:
+            permit_service.review_permit(
+                g.user,
+                request.form.get("permit_id"),
+                request.form.get("decision"),
+            )
+            flash("Permit decision saved.")
+        except PermitError as e:
+            flash(str(e))
+
+        return redirect(url_for("permits.review"))
+
+    return render_template(
+        "permit_review.html",
+        permits=pending,
     )
