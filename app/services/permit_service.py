@@ -77,3 +77,14 @@ def review_permit(user, permit_id, decision):
 
 def available_lots():
     return lot_repository.list_all()
+
+
+def pending_permits(user):
+    if not user or user.get("role") != "admin":
+        raise PermitError("Only administrators can review permits.")
+
+    return [
+        permit
+        for permit in permit_repository.list_all()
+        if permit["status"] == "pending"
+    ]
