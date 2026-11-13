@@ -3,38 +3,19 @@
 {% block content %}
 <h1>Review Pending Permits</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Permit</th>
-      <th>Vehicle ID</th>
-      <th>Lot ID</th>
-      <th>Decision</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for permit in permits %}
-    <tr>
-      <td>{{ permit.id }}</td>
-      <td>{{ permit.vehicle_id }}</td>
-      <td>{{ permit.lot_id }}</td>
-      <td>
-        <form method="post"
-              action="{{ url_for('permits.review') }}">
-          <input type="hidden" name="permit_id"
-                 value="{{ permit.id }}">
-          <button type="submit" name="decision"
-                  value="approved">Approve</button>
-          <button type="submit" name="decision"
-                  value="rejected">Reject</button>
-        </form>
-      </td>
-    </tr>
-    {% else %}
-    <tr>
-      <td colspan="4">No pending permit requests.</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% for permit in permits %}
+<p>
+  Permit #{{ permit.id }} |
+  Vehicle: {{ permit.vehicle_id }} |
+  Lot: {{ permit.lot_id }}
+</p>
+
+<form method="post" action="{{ url_for('permits.review') }}">
+  <input type="hidden" name="permit_id" value="{{ permit.id }}">
+  <button type="submit" name="decision" value="approved">Approve</button>
+  <button type="submit" name="decision" value="rejected">Reject</button>
+</form>
+{% else %}
+<p>No pending permit requests.</p>
+{% endfor %}
 {% endblock %}
