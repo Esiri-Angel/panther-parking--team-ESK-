@@ -52,5 +52,28 @@ def vehicles_for(user_id):
     return vehicle_repository.list_for_user(user_id)
 
 
+def review_permit(user, permit_id, decision):
+    if not user or user.get("role") != "admin":
+        raise PermitError("Only administrators can review permits.")
+
+    if decision not in ("approved", "rejected"):
+        raise PermitError("Choose approve or reject.")
+
+    permit = permit_repository.find_by_id(permit_id)
+
+    if permit is None:
+        raise PermitError("Permit not found.")
+
+    if permit["status"] != "pending":
+        raise PermitError("This permit has already been reviewed.")
+
+    updated = permit_repository.update_status(permit_id, decision)
+
+    if updated == 0:
+        raise PermitError("This permit has already been reviewed.")
+
+    return permit_repository.find_by_id(permit_id)
+
+
 def available_lots():
     return lot_repository.list_all()
