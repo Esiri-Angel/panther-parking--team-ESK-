@@ -24,7 +24,7 @@ def index():
             flash(str(e))
 
     return render_template(
-        "permits/index.html",
+        "permits.html",
         permits=permit_service.permits_for(g.user["id"]),
         vehicles=permit_service.vehicles_for(g.user["id"]),
         lots=permit_service.available_lots(),
