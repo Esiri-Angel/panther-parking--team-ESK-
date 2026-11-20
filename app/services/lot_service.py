@@ -14,6 +14,25 @@ def status_for(capacity, occupied):
     if occupied / capacity >= FILLING_THRESHOLD:
         return "filling"
     return "open"
+    def validate_lot(name, zone, capacity):
+    errors = []
+
+    if not name or not name.strip():
+        errors.append("Lot name is required")
+
+    if not zone or not zone.strip():
+        errors.append("Zone is required")
+
+    try:
+        capacity = int(capacity)
+
+        if capacity < 1 or capacity > 100000:
+            errors.append("Capacity must be between 1 and 100000")
+
+    except (ValueError, TypeError):
+        errors.append("Capacity must be a whole number")
+
+    return errors
 
 
 def lots_with_status():
